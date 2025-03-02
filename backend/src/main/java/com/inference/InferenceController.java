@@ -1,3 +1,5 @@
+package com.inference;
+
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,13 +22,13 @@ public class InferenceController {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build(); // FastAPI server URL
     }
 
-    // ✅ 1️⃣ This method handles file uploads from frontend (Existing)
+    // ✅ 1️⃣ Handles file uploads from frontend
     @PostMapping("/classify")
     public ResponseEntity<String> classifyChicken(@RequestParam("file") MultipartFile file) throws IOException {
         return sendImageToModel(file.getBytes(), file.getOriginalFilename());
     }
 
-    // ✅ 2️⃣ This method allows testing with a local image file
+    // ✅ 2️⃣ Allows testing with a local image file
     @PostMapping("/classify-local")
     public ResponseEntity<String> classifyLocalImage(@RequestParam("path") String imagePath) throws IOException {
         byte[] imageBytes = Files.readAllBytes(Path.of(imagePath)); // Read local image file

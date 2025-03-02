@@ -13,6 +13,17 @@ repositories {
 	mavenCentral()
 }
 
+// springBoot {
+//     mainClass = 'com.inference'
+// }
+
+// gradle 7+ syntax
+tasks.named('bootJar') {
+    mainClass.set('com.yourproject.HenSenseApplication')
+}
+
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
