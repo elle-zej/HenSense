@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from inference_sdk import InferenceHTTPClient
 from dotenv import load_dotenv
 import uvicorn
+from pydantic import BaseModel
 
 # Load environment variables
 load_dotenv()
@@ -16,6 +17,10 @@ CLIENT = InferenceHTTPClient(
 
 app = FastAPI()
 
+# Define the request model
+class PredictionRequest(BaseModel):
+    url: str
+
 @app.get("/")
 def read_root():
     print("Root endpoint was hit")  # Debugging log
@@ -26,10 +31,10 @@ async def favicon():
     return {}
 
 @app.post("/predict/")
-async def predict(url: str):
+async def predict(request: PredictionRequest):
     try:
         # Perform inference using the Roboflow client
-        result = CLIENT.infer(url, model_id="healthy-and-sick-chicken-detection-kavqw/18")
+        result = CLIENT.infer(request.url, model_id="healthy-and-sick-chicken-detection-kavqw/18")
         return {"prediction": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
