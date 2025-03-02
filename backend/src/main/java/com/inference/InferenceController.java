@@ -3,8 +3,7 @@ package com.inference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono; // Add this import
-import org.springframework.http.HttpStatusCode; // Add this import
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,6 +17,12 @@ public class InferenceController {
 
     public InferenceController(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build(); // FastAPI server URL
+    }
+
+    // Root endpoint
+    @GetMapping("/")
+    public String root() {
+        return "Welcome to the HenSense API! Use /api/inference/classify to classify images.";
     }
 
     // ✅ 1️⃣ Handles image URLs from frontend
