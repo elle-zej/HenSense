@@ -1,0 +1,10 @@
+item {
+    name: "dead",
+    id: 1,
+    display_name: "dead"
+}
+item {
+    name: "healthy",
+    id: 2,
+    display_name: "healthy"
+}
