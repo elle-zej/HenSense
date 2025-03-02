@@ -1,0 +1,57 @@
+@import "https://fonts.googleapis.com/css?family=Inter:0,400&display=swap";
+.HomePage_9_2 {
+  background: #ffd78d;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.Image_1_9_483 {
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  width: 320px;
+  height: 320px;
+}
+.House_1_10_884 {
+  aspect-ratio: 457/296;
+  background: #d3d3d3 url(<path-to-image>) 50% / cover no-repeat;
+  flex-shrink: 0;
+  width: 457px;
+  height: 296px;
+}
+.Title_48_1623 {
+  flex-shrink: 0;
+  width: 465px;
+  height: 331px;
+}
+.SunWClouds_9_489 {
+  aspect-ratio: 1;
+  background: #d3d3d3 url(<path-to-image>) 50% / cover no-repeat;
+  flex-shrink: 0;
+  width: 206px;
+  height: 206px;
+}
+.CheckStatusButton_9_198 {
+  padding: var(--sds-size-space-300);
+  justify-content: center;
+  align-items: center;
+  gap: var(--sds-size-space-200);
+  border-radius: var(--sds-size-radius-200);
+  border: var(--sds-size-stroke-border) solid
+    var(--sds-color-border-brand-default);
+  background: var(--sds-color-background-warning-secondary);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 267px;
+  height: 120px;
+  display: flex;
+}
+.Button_9762_429 {
+  color: var(--sds-color-text-brand-default);
+  text-shadow: 0 4px 4px #00000040;
+  font-family: var(--sds-typography-body-font-family);
+  font-size: var(--sds-typography-body-size-medium);
+  font-style: normal;
+  font-weight: var(--sds-typography-body-font-weight-regular);
+  line-height: 100%;
+  display: inline-block;
+}
