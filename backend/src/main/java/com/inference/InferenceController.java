@@ -1,12 +1,8 @@
 package com.inference;
 
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,40 +18,38 @@ public class InferenceController {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8000").build(); // FastAPI server URL
     }
 
-    // ✅ 1️⃣ Handles file uploads from frontend
+    // ✅ 1️⃣ Handles image URLs from frontend
     @PostMapping("/classify")
-    public ResponseEntity<String> classifyChicken(@RequestParam("file") MultipartFile file) throws IOException {
-        return sendImageToModel(file.getBytes(), file.getOriginalFilename());
+    public ResponseEntity<String> classifyChicken(@RequestParam("url") String imageUrl) {
+        return sendImageUrlToModel(imageUrl);
     }
 
-    // ✅ 2️⃣ Allows testing with a local image file
+    // ✅ 2️⃣ Allows testing with a local image file (hosted locally)
     @PostMapping("/classify-local")
     public ResponseEntity<String> classifyLocalImage(@RequestParam("path") String imagePath) throws IOException {
-        byte[] imageBytes = Files.readAllBytes(Path.of(imagePath)); // Read local image file
-        return sendImageToModel(imageBytes, "local_image.jpg");
+        // Host the local image file and get its URL
+        String imageUrl = hostLocalImage(imagePath);
+        return sendImageUrlToModel(imageUrl);
     }
 
-    // 🔹 3️⃣ Helper method to send image bytes to FastAPI model
-    private ResponseEntity<String> sendImageToModel(byte[] imageBytes, String filename) {
-        // Prepare image as multipart data
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        ByteArrayResource imageResource = new ByteArrayResource(imageBytes) {
-            @Override
-            public String getFilename() {
-                return filename; // Simulate a file name
-            }
-        };
-        body.add("file", imageResource);
-
-        // Send image to FastAPI model
+    // 🔹 3️⃣ Helper method to send image URL to FastAPI model
+    private ResponseEntity<String> sendImageUrlToModel(String imageUrl) {
+        // Send image URL to FastAPI model
         String response = webClient.post()
                 .uri("/predict/")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .bodyValue(body)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"url\": \"" + imageUrl + "\"}")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // Blocking call for simplicity
 
         return ResponseEntity.ok(response);
+    }
+
+    // 🔹 4️⃣ Helper method to host a local image file and return its URL
+    private String hostLocalImage(String imagePath) throws IOException {
+        // For simplicity, assume the image is hosted locally at a known URL
+        // In a real application, you would need to host the file using a static file server
+        return "http://localhost:8000/temp/" + Path.of(imagePath).getFileName().toString();
     }
 }
